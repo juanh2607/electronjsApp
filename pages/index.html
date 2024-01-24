@@ -13,10 +13,10 @@
     <title>Hello from Electron renderer!</title>
   </head>
   <body>
-    <h1>Hello from Electron renderer!</h1>
-    <p>👋</p>
-    <p id="info">
-      For now, this app only pops a notification when the app has loaded.
-    </p>
+    <form id="phraseForm">
+      <input type="text" id="phraseInput" name="phrase">
+      <button type="submit">Store</button>
+    </form>
   </body>
+  <script src="../src/renderer.js"></script>
 </html>
