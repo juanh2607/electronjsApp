@@ -10,13 +10,21 @@
       http-equiv="X-Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
     />
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css" />
     <title>Hello from Electron renderer!</title>
   </head>
   <body>
+    <!-- TODO:
+       
+    -->
+    <div id="timer">00:00:00</div>
+    <div id="timer-progress"></div>
+    <button id="timerPause">Pause</button>
+    <button id="timerReset">Reset</button>
     <form id="phraseForm">
       <input type="text" id="phraseInput" name="phrase">
       <button type="submit">Store</button>
     </form>
   </body>
-  <script src="../src/renderer.js"></script>
+  <script src="../renderer.js"></script>
 </html>

@@ -1,0 +1,63 @@
+/* TODO: separar en diferentes .css */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  line-height: 1.6;
+}
+/* Timer */
+#timer {
+  font-size: 48px;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+#timer-progress {
+  /* TODO: mejorar el color en relación al background */
+  width: 100%;
+  background: lightblue;
+  height: 20px;
+  transition: background 1s;
+  border-radius: 5px;
+}
+
+button { 
+  display: inline-block;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #17a2b8;
+}
+
+/* Phrase */
+form {
+  margin-top: 20px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border: solid 1px #ddd;
+  transition: border-width 0.6s linear;
+  width: 70%;
+}
+
+input[type="text"]:focus {
+  border-color: #5C6BC0;
+  border-width: 2px;
+}

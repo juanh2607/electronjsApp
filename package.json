@@ -14,7 +14,9 @@
   "build": {
     "appId": "electronjsapp",
     "win": {
-      "target": ["nsis"]
+      "target": [
+        "nsis"
+      ]
     },
     "nsis": {
       "uninstallDisplayName": "electronjsapp",
@@ -36,6 +38,7 @@
   },
   "dependencies": {
     "auto-launch": "^5.0.6",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "fs": "^0.0.1-security"
   }
 }
