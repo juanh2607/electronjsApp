@@ -75,6 +75,3 @@ function showNotification (title) {
 
 // TODO: agregar un botón que te permita habilitar notificaciones random por
 // un periodo de tiempo o hasta desabilitarlo
-// TODO: guardar las frases de forma persistente, por ahora lo más sencillo
-// que puedas.
-// TODO: timer para controlar el tiempo que estuviste trabajando (para vos)

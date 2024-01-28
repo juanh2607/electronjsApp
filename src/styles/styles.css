@@ -1,8 +1,15 @@
+/* Color Palette
+#0C2D57 Navy
+#FC6736 Orange
+#FFB0B0 Peach
+#EFECEC Grey
+*/
+
 /* TODO: separar en diferentes .css */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
+  background-color: #EFECEC; 
+  color: #0C2D57; 
   margin: 0;
   padding: 0;
   display: flex;
@@ -17,23 +24,23 @@ body {
   font-size: 48px;
   text-align: center;
   padding: 20px;
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 0px;
+  color: #0C2D57;
 }
 
 #timer-progress {
-  /* TODO: mejorar el color en relación al background */
   width: 100%;
-  background: lightblue;
+  background: #0C2D57; 
   height: 20px;
   transition: background 1s;
   border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 button { 
   display: inline-block;
   color: #fff;
-  background-color: #333;
+  background-color: #0C2D57; 
   border: none;
   padding: 10px 20px;
   margin: 5px;
@@ -42,7 +49,7 @@ button {
 }
 
 button:hover {
-  background-color: #17a2b8;
+  background-color: #FC6736; 
 }
 
 /* Phrase */
@@ -58,6 +65,6 @@ input[type="text"] {
 }
 
 input[type="text"]:focus {
-  border-color: #5C6BC0;
+  border-color: #0C2D57;
   border-width: 2px;
 }
