@@ -1,7 +1,16 @@
+// TODO: agregar marco y título al temporizador
+// TODO: convertir en una clase para tener varios temporizadores
+
 // Timer
-let seconds = 0, minutes = 1, hours = 0;
+const STARTING_TIME = 10; // Amount of seconds the timer starts with
+let pausedValue = STARTING_TIME; // Amount of seconds the timer had left when paused
+let remainingTime = STARTING_TIME;
+let unpauseTime = null;
+let seconds = STARTING_TIME % 60;
+let minutes = Math.floor(STARTING_TIME / 60) % 60;
+let hours = Math.floor(STARTING_TIME / 3600);
 let paused = true;
-let timerId = null;
+let timerId = null; // Id of the timeout
 
 // Get elements
 const timer = document.getElementById('timer');
@@ -16,53 +25,59 @@ pauseButton.textContent = paused ? 'Unpause' : 'Pause';
 pauseButton.addEventListener('click', () => {
   paused = !paused;
   pauseButton.textContent = paused ? 'Unpause' : 'Pause';
+  pausedValue = remainingTime; // Doesn't matter if pausing or unpausing.
   paused ? clearTimeout(timerId) : startTimer();
 });
 
 resetButton.addEventListener('click', () => {
-  seconds = 0, minutes = 1, hours = 0;
-  updateTimer();
-  if (!paused) {
+  if (paused) {
+    progress.style.backgroundColor = '#0C2D57';
+  } else {
     startTimer();
   }
 });
 
 function startTimer() {
+  unpauseTime = new Date();
+
   if (timerId !== null) {
     clearTimeout(timerId); // Eliminate the timeout vinculated to the timer
   }
 
-  timerId = setTimeout(() => {
-    seconds--;
-    if (seconds < 0) {
-      minutes--;
-      seconds = 59;
-    }
-    if (minutes < 0) {
-      hours--;
-      minutes = 59;
-    }
-    updateTimer();
-    startTimer();
-  }, 1000);
+  updateTimer();
 }
 
-// TODO: ver como hacer para que el set interval directamente no se llame si el
-// temporizador no está activo (es un busy wait)
 // TODO: setear el tiempo que quieras y que no pueda pasar de 0 y que mande notificación cuando termina
 // TODO: cuando el temporizador está activo setear notificaciones a intervalos aleatorios (entre 15-30 minutos)
 // TODO: partir la barra en cuatro (una abajo de la otra)
 
 function updateTimer() {
+  // Calculate elapsed time
+  const now = new Date();
+  const elapsedTime = now - unpauseTime;
+
+  // Update remaining time
+  remainingTime = pausedValue - Math.floor(elapsedTime / 1000);
+
+  seconds = remainingTime % 60;
+  minutes = Math.floor(remainingTime / 60) % 60;
+  hours = Math.floor(remainingTime / 3600);
+
   timer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
   // Update progress bar
-  const totalSeconds = hours * 3600 + minutes * 60 + seconds;
-
-  const percentage = totalSeconds / 60;
+  const percentage = 1 - (1 - (remainingTime / STARTING_TIME));
   progress.style.width = `${percentage * 100}%`;
 
   updateProgressBarColor(percentage);
+
+  if (remainingTime > 0) { // Schedule the next update
+    timerId = setTimeout(updateTimer, 1000);
+  } else {
+    console.log('Alarm!');
+    // TODO: bloquear el botón de pausado o directamente sacarlo. Arregla un bug cuando termina, apretas el pause y deja de funcionar el reset
+    // TODO: mostrar notificación cuando se termina
+  }
 }
 
 function updateProgressBarColor(percentage) {
