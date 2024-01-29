@@ -20,10 +20,25 @@ body {
   line-height: 1.6;
 }
 /* Timer */
+#timer-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #EFECEC;
+  box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.5);
+}
+#timer-container h3 {
+  padding: 10px;
+  margin: 0;
+}
 #timer {
   font-size: 48px;
   text-align: center;
-  padding: 20px;
+  padding: 0px 20px;
   margin-bottom: 0px;
   color: #0C2D57;
 }
@@ -50,6 +65,11 @@ button {
 
 button:hover {
   background-color: #FC6736; 
+}
+
+button:disabled {
+  background-color: #cccccc;
+  color: #ffffff;
 }
 
 /* Phrase */

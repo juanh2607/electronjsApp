@@ -2,7 +2,7 @@
 // TODO: convertir en una clase para tener varios temporizadores
 
 // Timer
-const STARTING_TIME = 10; // Amount of seconds the timer starts with
+const STARTING_TIME = 3; // Amount of seconds the timer starts with
 let pausedValue = STARTING_TIME; // Amount of seconds the timer had left when paused
 let remainingTime = STARTING_TIME;
 let unpauseTime = null;
@@ -25,13 +25,22 @@ pauseButton.textContent = paused ? 'Unpause' : 'Pause';
 pauseButton.addEventListener('click', () => {
   paused = !paused;
   pauseButton.textContent = paused ? 'Unpause' : 'Pause';
-  pausedValue = remainingTime; // Doesn't matter if pausing or unpausing.
   paused ? clearTimeout(timerId) : startTimer();
 });
 
 resetButton.addEventListener('click', () => {
+  remainingTime = STARTING_TIME;
+  pausedValue = STARTING_TIME;
+  seconds = STARTING_TIME % 60;
+  minutes = Math.floor(STARTING_TIME / 60) % 60;
+  hours = Math.floor(STARTING_TIME / 3600);
+
+  if (pauseButton.disabled) pauseButton.disabled = false;
+
   if (paused) {
     progress.style.backgroundColor = '#0C2D57';
+    timer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    progress.style.width = `100%`;
   } else {
     startTimer();
   }
@@ -39,9 +48,10 @@ resetButton.addEventListener('click', () => {
 
 function startTimer() {
   unpauseTime = new Date();
+  pausedValue = remainingTime;
 
   if (timerId !== null) {
-    clearTimeout(timerId); // Eliminate the timeout vinculated to the timer
+    clearTimeout(timerId); // Eliminate the old vinculated to the timer
   }
 
   updateTimer();
@@ -75,6 +85,7 @@ function updateTimer() {
     timerId = setTimeout(updateTimer, 1000);
   } else {
     console.log('Alarm!');
+    pauseButton.disabled = true;
     // TODO: bloquear el botón de pausado o directamente sacarlo. Arregla un bug cuando termina, apretas el pause y deja de funcionar el reset
     // TODO: mostrar notificación cuando se termina
   }
@@ -95,3 +106,36 @@ function updateProgressBarColor(percentage) {
   }
   progress.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 }
+
+// TODO: voy a querer que varios elementos sean draggable, poner
+const container = document.getElementById('timer-container');
+let newX = 0, newY = 0, oldX = 0, oldY = 0;
+
+// TODO: revisar bien la liberación de listeners en document.
+// TODO: cuando el mouse se va de la ventana se porta raro.
+// TODO: agregar un botón desde donde draggear (onda notion)
+container.addEventListener('pointerdown', (event) => {
+  event.preventDefault();
+  // Store old position
+  oldX = event.clientX;
+  oldY = event.clientY;
+  
+  document.addEventListener('pointermove', dragItem);
+});
+
+container.addEventListener('pointerup', (event) => {
+  document.removeEventListener('pointermove', dragItem);
+});
+
+function dragItem(event) {
+  event.preventDefault();
+  newX = oldX - event.clientX;
+  newY = oldY - event.clientY;
+  oldX = event.clientX;
+  oldY = event.clientY;
+  container.style.left = (container.offsetLeft - newX) + "px";
+  container.style.top  = (container.offsetTop - newY) + "px";
+}
+
+
+

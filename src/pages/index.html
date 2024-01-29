@@ -17,10 +17,13 @@
     <!-- TODO:
       
     -->
-    <div id="timer">-:-:-</div>
-    <div id="timer-progress"></div>
-    <button id="timerPause">-</button>
-    <button id="timerReset">Reset</button>
+    <div id="timer-container" draggable="true">
+      <h3 contenteditable="true">Temporizador</h3>
+      <div id="timer">-:-:-</div>
+      <div id="timer-progress"></div>
+      <button id="timerPause">-</button>
+      <button id="timerReset">Reset</button>
+    </div>
     <form id="phraseForm">
       <input type="text" id="phraseInput" name="phrase">
       <button type="submit">Store</button>
