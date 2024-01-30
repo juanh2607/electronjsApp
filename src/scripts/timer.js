@@ -1,10 +1,10 @@
 // TODO: convertir en una clase para tener varios temporizadores
 class Timer {
   /**
-   *
-   * @param {*} duration 
+   * TODO: quiero que renderer solo importe este metodo en vez de Timer.createTimer
+   * @param {number} duration 
    */
-  static create(duration) {
+  static createTimer(duration) {
     // Create DOM elements
     const timerContainer  = document.createElement('div');
     const timerElement    = document.createElement('div');
@@ -27,7 +27,10 @@ class Timer {
     timerContainer.appendChild(pauseElement);
     timerContainer.appendChild(resetElement);
 
-    document.body.appendChild(timerContainer);
+    // Wrap in a DraggableContainer
+    const draggableContainer = new DraggableContainer(timerContainer);
+
+    document.body.appendChild(draggableContainer.container);
     const timer = new Timer(duration, timerElement, progressElement, pauseElement, resetElement);
 
     return timer;

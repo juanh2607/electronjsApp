@@ -12,4 +12,5 @@
   document.getElementById('timerReset')
 );*/
 
-const timer = Timer.create(10);
+Timer.createTimer(10);
+Timer.createTimer(20);
