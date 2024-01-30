@@ -21,7 +21,7 @@ body {
 }
 
 /* Timer */
-#timer-container {
+.timer-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,24 +31,34 @@ body {
   background-color: #EFECEC;
   box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.5);
 }
-#timer-container h3 {
+.timer-container h3 {
   padding: 10px;
   margin: 0;
 }
-#timer {
+.timer {
   font-size: 48px;
   text-align: center;
   padding: 0px 20px;
   margin-bottom: 0px;
   color: #0C2D57;
 }
-#timer-progress {
+.timer-progress {
   width: 100%;
   background: #0C2D57; 
   height: 20px;
   transition: background 1s;
   border-radius: 5px;
   margin-bottom: 10px;
+}
+.timer-button { 
+  display: inline-block;
+  color: #fff;
+  background-color: #0C2D57; 
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 /* Draggable Container */
@@ -63,17 +73,6 @@ body {
   margin-left: -20px; /* Same as the container padding-left */
   margin-top: 20px;
   display: none;
-}
-
-button { 
-  display: inline-block;
-  color: #fff;
-  background-color: #0C2D57; 
-  border: none;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
 button:hover {
