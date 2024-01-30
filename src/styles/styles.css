@@ -19,9 +19,9 @@ body {
   height: 100vh;
   line-height: 1.6;
 }
+
 /* Timer */
 #timer-container {
-  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,7 +42,6 @@ body {
   margin-bottom: 0px;
   color: #0C2D57;
 }
-
 #timer-progress {
   width: 100%;
   background: #0C2D57; 
@@ -50,6 +49,20 @@ body {
   transition: background 1s;
   border-radius: 5px;
   margin-bottom: 10px;
+}
+
+/* Draggable Container */
+#draggableContainer {
+  position: absolute;
+  padding-left: 20px; /* Invisible space for the dragButton */
+}
+#dragButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: -20px; /* Same as the container padding-left */
+  margin-top: 20px;
+  display: none;
 }
 
 button { 

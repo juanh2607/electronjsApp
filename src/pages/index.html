@@ -17,12 +17,15 @@
     <!-- TODO:
       
     -->
-    <div id="timer-container" draggable="true">
-      <h3 contenteditable="true">Temporizador</h3>
-      <div id="timer">-:-:-</div>
-      <div id="timer-progress"></div>
-      <button id="timerPause">-</button>
-      <button id="timerReset">Reset</button>
+    <div id="draggableContainer" draggable="true">
+      <button id="dragButton">Drag</button>
+      <div id="timer-container">
+        <h3 contenteditable="true">Temporizador</h3>
+        <div id="timer">-:-:-</div>
+        <div id="timer-progress"></div>
+        <button id="timerPause">-</button>
+        <button id="timerReset">Reset</button>
+      </div>
     </div>
     <form id="phraseForm">
       <input type="text" id="phraseInput" name="phrase">
@@ -31,4 +34,5 @@
   </body>
   <script src="../renderer.js"></script>
   <script src="../scripts/timer.js"></script>
+  <script src="../scripts/draggable.js"></script>
 </html>
