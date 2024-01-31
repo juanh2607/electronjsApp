@@ -16,8 +16,8 @@ class DraggableContainer {
     this.oldX = 0;
     this.oldY = 0;
     // Bind only once to avoid hard to find bugs
-    this.boundDragItem = this.dragItem.bind(this);
-
+    this.boundDragItem = this.#dragItem.bind(this);
+    // Set event listeners
     this.container.addEventListener('mouseover', () => {
       this.dragButton.style.display = 'block';
     });
@@ -38,9 +38,26 @@ class DraggableContainer {
     });
   }
 
-  dragItem(event) {
+  #dragItem(event) {
     event.preventDefault();
     this.container.style.left = (event.clientX - this.oldX) + "px";
     this.container.style.top  = (event.clientY - this.oldY) + "px";
+  }
+
+  /**
+   * 
+   * @param {number} left - Pixels from the left side of the window 
+   * @param {number} top  - Pixels from the top side of the window
+   */
+  setCoordinates(left, top) {
+    this.container.style.left = left + "px";
+    this.container.style.top  = top  + "px";
+  }
+
+  getCoordinates() {
+    return {
+      left: this.container.offsetLeft,
+      top:  this.container.offsetTop
+    }
   }
 }

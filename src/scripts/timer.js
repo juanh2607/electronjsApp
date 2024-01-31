@@ -1,10 +1,33 @@
-// TODO: convertir en una clase para tener varios temporizadores
 class Timer {
+  constructor(title, startingTime, remainingTime, leftOffset, topOffset) {
+    console.log(title, startingTime, remainingTime, leftOffset, topOffset)
+    this.title = title;
+    // For measuring time
+    this.startingTime    = startingTime;
+    this.lastPausedValue = startingTime;
+    this.remainingTime   = remainingTime;
+    this.unpauseTime = null; // Where the date of the last unpause is stored
+    // Time
+    this.seconds = startingTime % 60;
+    this.minutes = Math.floor(startingTime / 60) % 60;
+    this.hours   = Math.floor(startingTime / 3600);
+
+    this.paused = true;
+    this.timeoutId = null;
+    this.draggableContainer = null;
+    
+    this.#buildTimer();
+    this.draggableContainer.setCoordinates(leftOffset, topOffset);
+    
+    // Set event listeners
+    this.pauseButton.addEventListener('click', () => this.togglePause());
+    this.resetButton.addEventListener('click', () => this.reset());
+  }
+
   /**
-   * TODO: quiero que renderer solo importe este metodo en vez de Timer.createTimer
-   * @param {number} duration 
+   * Create the HTML component
    */
-  static createTimer(duration) {
+  #buildTimer() {
     // Create DOM elements
     const timerContainer  = document.createElement('div');
     const timerTitle      = document.createElement('h3');
@@ -19,7 +42,7 @@ class Timer {
     pauseElement.className = 'timer-button';
     resetElement.className = 'timer-button';
     // Initialize values
-    timerTitle.textContent = 'New Timer';
+    timerTitle.textContent = this.title;
     timerTitle.contentEditable = true;
     timerElement.textContent = '--:--:--';
     pauseElement.textContent = 'Unpause';
@@ -32,28 +55,10 @@ class Timer {
     timerContainer.appendChild(resetElement);
 
     // Wrap in a DraggableContainer
-    const draggableContainer = new DraggableContainer(timerContainer);
+    this.draggableContainer = new DraggableContainer(timerContainer);
 
-    document.body.appendChild(draggableContainer.container);
-    const timer = new Timer(duration, timerElement, progressElement, pauseElement, resetElement);
+    document.body.appendChild(this.draggableContainer.container);
 
-    return timer;
-  }
-
-  constructor(startingTime, timerElement, progressElement, pauseElement, resetElement) {
-    // For measuring time
-    this.startingTime    = startingTime;
-    this.lastPausedValue = startingTime;
-    this.remainingTime   = startingTime;
-    this.unpauseTime = null; // Where the date of the last unpause is stored
-    // Time
-    this.seconds = startingTime % 60;
-    this.minutes = Math.floor(startingTime / 60) % 60;
-    this.hours   = Math.floor(startingTime / 3600);
-
-    this.paused = true;
-    this.timeoutId = null;
-    // Components
     this.timer = timerElement;
     this.progress = progressElement;
     this.pauseButton = pauseElement;
@@ -61,9 +66,6 @@ class Timer {
     this.resetButton = resetElement;
 
     this.timer.textContent = `${this.hours.toString().padStart(2, '0')}:${this.minutes.toString().padStart(2, '0')}:${this.seconds.toString().padStart(2, '0')}`;
-    // Set event listeners
-    this.pauseButton.addEventListener('click', () => this.togglePause());
-    this.resetButton.addEventListener('click', () => this.reset());
   }
 
   togglePause() {
@@ -146,4 +148,33 @@ class Timer {
     }
     this.progress.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
   }
+
+  // STATIC METHODS
+  /**
+   * @typedef {Object} TimerJSON
+   * @property {string} title
+   * @property {number} startingTime
+   * @property {number} remainingTime 
+   * @property {number} leftOffset - Distance from left of parent container
+   * @property {number} topOffset - Distance from top of parent container
+   */
+
+  /**
+   * Retorna un objeto JSON con los datos necesarios para persistir el timer luego de 
+   * cerrada la aplicación
+   * @param {Timer} timer 
+   * @returns {TimerJSON}
+   */
+  static toJSON(timer) {
+    const { left, top } = timer.draggableContainer.getCoordinates();
+    
+    return {
+      title: timer.title,
+      startingTime: timer.startingTime,
+      remainingTime: timer.remainingTime,
+      leftOffset: left,
+      topOffset: top
+    }
+  }
+
 }
