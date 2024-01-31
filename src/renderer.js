@@ -5,12 +5,27 @@
   phraseInput.value = '';
 });*/
 
-/*const timer = new Timer(5,
-  document.getElementById('timer'),
-  document.getElementById('timer-progress'),
-  document.getElementById('timerPause'),
-  document.getElementById('timerReset')
-);*/
+// Modal
+const myDialog = document.getElementById('myDialog');
+const openButton = document.getElementById('add');
+const closeButton = document.getElementById('closeButton');
 
-Timer.createTimer(10);
-Timer.createTimer(20);
+openButton.addEventListener('click', () => {
+  myDialog.showModal();
+});
+
+closeButton.addEventListener('click', () => {
+  myDialog.close();
+});
+
+// New Timer Form
+const newTimerForm = document.getElementById('newTimerForm');
+const newDurationInput = document.getElementById('newDurationInput');
+
+newTimerForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (newDurationInput.value) {
+    Timer.createTimer(newDurationInput.value);
+    myDialog.close();
+  }
+});

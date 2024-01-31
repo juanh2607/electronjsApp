@@ -5,6 +5,13 @@
 #EFECEC Grey
 */
 
+/* Otro posible color palette (dark, navy, orange), por ahi para un dark mode.
+#2D3250 
+#424769 
+#7077A1
+#F6B17A
+*/
+
 /* TODO: separar en diferentes .css */
 body {
   font-family: 'Arial', sans-serif;
@@ -19,6 +26,13 @@ body {
   height: 100vh;
   line-height: 1.6;
 }
+
+#add {
+  position: fixed;
+  bottom: 20px; 
+  right: 20px; 
+}
+
 
 /* Timer */
 .timer-container {
@@ -50,15 +64,18 @@ body {
   border-radius: 5px;
   margin-bottom: 10px;
 }
-.timer-button { 
-  display: inline-block;
-  color: #fff;
-  background-color: #0C2D57; 
+
+/* New Timer Form */
+#newTimerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#newDurationInput {
+  padding: 10px;
   border: none;
-  padding: 10px 20px;
-  margin: 5px;
   border-radius: 5px;
-  cursor: pointer;
+  background: #e0e0e0;
 }
 
 /* Draggable Container */
@@ -75,6 +92,17 @@ body {
   display: none;
 }
 
+button {
+  display: inline-block;
+  color: #fff;
+  background-color: #0C2D57; 
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 button:hover {
   background-color: #FC6736; 
 }
@@ -86,7 +114,7 @@ button:disabled {
 
 /* Phrase */
 form {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 input[type="text"] {
@@ -99,4 +127,54 @@ input[type="text"] {
 input[type="text"]:focus {
   border-color: #0C2D57;
   border-width: 2px;
+}
+
+/* Dialog */
+dialog {
+  border: none;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #EFECEC;
+  color: #0C2D57;
+  box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.5);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+dialog form p {
+  margin: 0;
+  padding: 10px;
+}
+
+dialog form input[type="number"] {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #e0e0e0;
+}
+
+dialog form button[type="submit"] {
+  display: inline-block;
+  color: #fff;
+  background-color: #0C2D57; 
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+dialog form button[type="submit"]:hover {
+  background-color: #FC6736; 
+}
+
+dialog #closeButton:hover {
+  background-color: #0C2D57;
 }

@@ -7,6 +7,7 @@ class Timer {
   static createTimer(duration) {
     // Create DOM elements
     const timerContainer  = document.createElement('div');
+    const timerTitle      = document.createElement('h3');
     const timerElement    = document.createElement('div');
     const progressElement = document.createElement('div');
     const pauseElement    = document.createElement('button');
@@ -18,10 +19,13 @@ class Timer {
     pauseElement.className = 'timer-button';
     resetElement.className = 'timer-button';
     // Initialize values
+    timerTitle.textContent = 'New Timer';
+    timerTitle.contentEditable = true;
     timerElement.textContent = '--:--:--';
     pauseElement.textContent = 'Unpause';
     resetElement.textContent = 'Restart';
     // 'Build' timer
+    timerContainer.append(timerTitle);
     timerContainer.appendChild(timerElement);
     timerContainer.appendChild(progressElement);
     timerContainer.appendChild(pauseElement);
