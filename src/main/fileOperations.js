@@ -3,11 +3,20 @@ const fs = require('fs');
 const path = require('node:path');
 
 // Used Paths
-const tempPath = path.join(__dirname, '../../temp');
+const tempPath        = path.join(__dirname, '../../temp');
 const timerDataPath   = path.join(tempPath, 'timerData.json');
 const phrasesFilePath = path.join(tempPath, 'phrases.txt');
 
-module.exports = { storeTimerData, storePhrase, setTempFiles };
+module.exports = {
+  //Timer 
+  storeTimerData, loadTimerData,
+  // Phrase
+  storePhrase, loadPhrases,
+  // Files 
+  setTempFiles 
+};
+
+// TODO: ver si conviene hacerlo asyncrónico
 
 /**
  * Stores the data from timers in JSON format.
@@ -22,6 +31,15 @@ function storeTimerData(timerData) {
 }
 
 /**
+ * Reads the timer data and returns a JSON string
+ * @returns {string}
+ */
+function loadTimerData() {
+  const data = fs.readFileSync(timerDataPath, (err) => handleError(err));
+  return data.toString();
+}
+
+/**
  * Stores the phrase by appending it to phrase.txt
  * @param {string} phrase 
  */
@@ -29,7 +47,16 @@ function storePhrase(phrase) {
   fs.appendFile(phrasesFilePath, phrase + '\n', (err) => handleError(err));
 }
 
-// TODO: considerar manejo de errores. No es prioritario ahora
+/**
+ * Reads the phrases data and returns a string with all phrases
+ * @returns {string}
+ */
+function loadPhrases() {
+  const data = fs.readFileSync(phrasesFilePath, 'utf8', (err) => handleError(err));
+  return data;
+}
+
+// TODO: considerar un mejor manejo de errores. No es prioritario ahora
 function handleError(err) {
   if (err) throw err;
 }
@@ -52,11 +79,9 @@ function setTempFiles() {
 function createFileIfNotExists(pathname) {
   if (!fs.existsSync(pathname)) {
     fs.open(pathname, 'a', (err, fd) => {
-      if (err) throw err;
+      handleError(err);
 
-      fs.close(fd, (err) => {
-        if (err) throw err;
-      });
+      fs.close(fd, (err) => handleError(err));
     });
   }
 }

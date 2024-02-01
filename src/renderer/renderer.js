@@ -42,13 +42,7 @@ const newDurationInput = document.getElementById('newDurationInput');
 newTimerForm.addEventListener('submit', (event) => {
   event.preventDefault();
   if (newDurationInput.value) {
-    const timer = new Timer(
-      'New Timer',
-      newDurationInput.value,
-      newDurationInput.value,
-      0,
-      0
-    );
+    const timer = new Timer('New Timer', newDurationInput.value, newDurationInput.value, 0, 0);
     timers.push(timer);
     myDialog.close();
   }
