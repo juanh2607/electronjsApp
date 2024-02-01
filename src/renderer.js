@@ -42,9 +42,20 @@ const newDurationInput = document.getElementById('newDurationInput');
 newTimerForm.addEventListener('submit', (event) => {
   event.preventDefault();
   if (newDurationInput.value) {
-    const timer = new Timer(newDurationInput.value);
-    const timerData = Timer.toJSON(timer);
-    window.myAPI.sendComponentData('timerData', timerData);
+    const timer = new Timer(
+      'New Timer',
+      newDurationInput.value,
+      newDurationInput.value,
+      0,
+      0
+    );
+    timers.push(timer);
     myDialog.close();
   }
+});
+
+// Before Unload
+window.addEventListener('beforeunload', (event) => {
+  const timerData = timers.map(Timer.toJSON);
+  window.myAPI.sendComponentData('timerData', timerData);
 });

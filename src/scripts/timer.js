@@ -1,6 +1,6 @@
+// TODO: separa la lógica del componente de la lógica del timer en si
 class Timer {
   constructor(title, startingTime, remainingTime, leftOffset, topOffset) {
-    console.log(title, startingTime, remainingTime, leftOffset, topOffset)
     this.title = title;
     // For measuring time
     this.startingTime    = startingTime;
