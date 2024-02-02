@@ -11,7 +11,7 @@ let timers = new Array();
 window.myAPI.receiveComponentData('timerData', (data) => {
   const timerData = JSON.parse(data);
   timerData.forEach((item) => {
-    const timer = new Timer(  
+    const timer = new TimerComponent(  
       item.title,
       item.startingTime,
       item.remainingTime,
@@ -42,7 +42,7 @@ const newDurationInput = document.getElementById('newDurationInput');
 newTimerForm.addEventListener('submit', (event) => {
   event.preventDefault();
   if (newDurationInput.value) {
-    const timer = new Timer('New Timer', newDurationInput.value, newDurationInput.value, 0, 0);
+    const timer = new TimerComponent('New Timer', newDurationInput.value, newDurationInput.value, 0, 0);
     timers.push(timer);
     myDialog.close();
   }
@@ -50,6 +50,8 @@ newTimerForm.addEventListener('submit', (event) => {
 
 // Before Unload
 window.addEventListener('beforeunload', (event) => {
-  const timerData = timers.map(Timer.toJSON);
+  const timerData = timers.map(TimerComponent.toJSON);
   window.myAPI.sendComponentData('timerData', timerData);
 });
+
+// new TimerComponent('Probando', 20, 20, 50, 50);
