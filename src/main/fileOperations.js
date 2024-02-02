@@ -5,9 +5,10 @@ const path = require('node:path');
 // TODO: (largo plazo): sustituir por una base de datos
 
 // Used Paths
-const tempPath        = path.join(__dirname, '../../temp');
-const timerDataPath   = path.join(tempPath, 'timerData.json');
-const phrasesFilePath = path.join(tempPath, 'phrases.txt');
+const tempPath         = path.join(__dirname, '../../temp');
+const timerDataPath    = path.join(tempPath, 'timerData.json');
+const timerHistoryPath = path.join(tempPath, 'timerHist.csv')
+const phrasesFilePath  = path.join(tempPath, 'phrases.txt');
 
 module.exports = {
   //Timer 
@@ -36,12 +37,55 @@ function storeTimerData(timerData) {
 }
 
 /**
- * Reads the timer data and returns a JSON string
- * @returns {string}
+ * Reads the timer data and returns a JSON string. If the data wasn´t updated today,
+ * it uploads the timerData to timerHist.csv and then resets the timers.
+ * @returns {string} - String containing the json data.
  */
 function loadTimerData() {
   const data = fs.readFileSync(timerDataPath, (err) => handleError(err));
-  return data.toString();
+  const dataJSON = JSON.parse(data.toString());
+
+  if (!updatedToday(dataJSON.lastUpdated)) {
+    writeTimerHistory(dataJSON.timerData, dataJSON.lastUpdated);
+    // Reset timers
+    dataJSON.timerData.forEach((item) => {
+      item.remainingTime = item.startingTime;
+    });
+  }
+
+  return JSON.stringify(dataJSON.timerData, null, 2);
+}
+
+/**
+ * Returns true if lastUpdateDate happened today, false if not 
+ * @param {string} lastUpdated
+ */
+function updatedToday(lastUpdated) {
+  const currentDate = new Date();
+  const lastUpdatedDate = new Date(lastUpdated);
+
+  return (
+    currentDate.getDate() === lastUpdatedDate.getDate() &&
+    currentDate.getMonth() === lastUpdatedDate.getMonth() &&
+    currentDate.getFullYear() === lastUpdatedDate.getFullYear()
+  )
+}
+
+/**
+ * Writes the timer data to a history file async
+ * @param {Array} timerData 
+ * @param {string} date 
+ */
+function writeTimerHistory(timerData, date) {
+  const historyData = timerData.map(({ title, startingTime, remainingTime }) => ({
+    date: new Date(date).toISOString().split('T')[0], // YYYY-MM-DD format
+    title: title,
+    timeElapsed: startingTime - remainingTime
+  }));
+
+  const csvData = historyData.map(({ date, title, timeElapsed }) => `${date};${title};${timeElapsed}`).join('\n');
+
+  fs.appendFile(timerHistoryPath, csvData + '\n', (err) => handleError(err));
 }
 
 /**
@@ -75,6 +119,7 @@ function setTempFiles() {
   }
   createFileIfNotExists(phrasesFilePath);
   createFileIfNotExists(timerDataPath);
+  createFileIfNotExists(timerHistoryPath);
 }
 
 /**

@@ -11,17 +11,11 @@ let timers = new Array();
 
 // Initial Data Loading
 window.myAPI.receiveComponentData('timerData', (data) => {
-  const { timerData, lastUpdated } = JSON.parse(data);
-  const currentDate = new Date();
-  const lastUpdatedDate = new Date(lastUpdated);
-  const updatedToday = currentDate.getDate() === lastUpdatedDate.getDate() &&
-                       currentDate.getMonth() === lastUpdatedDate.getMonth() &&
-                       currentDate.getFullYear() === lastUpdatedDate.getFullYear();
+  const timerData = JSON.parse(data);
+  // TODO: el front no debería tener que preocuparse por el reseteo de los timers
+  // esto es lógica del backend
 
   timerData.forEach((item) => {
-    if (!updatedToday) { // Reset timers daily
-      item.remainingTime = item.startingTime;
-    }
     const timer = new TimerComponent(  
       item.title,
       item.startingTime,
@@ -61,8 +55,7 @@ newTimerForm.addEventListener('submit', (event) => {
 
 // Before Unload
 window.addEventListener('beforeunload', (event) => {
+  // TODO: el remainingTime no se está guardando bien si el temporizador no se pausa antes de llamar a toJSON
   const timerData = timers.map(TimerComponent.toJSON);
   window.myAPI.sendComponentData('timerData', timerData);
 });
-
-// new TimerComponent('Probando', 20, 20, 50, 50);
