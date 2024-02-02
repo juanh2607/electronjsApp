@@ -2,6 +2,8 @@
 const fs = require('fs');
 const path = require('node:path');
 
+// TODO: (largo plazo): sustituir por una base de datos
+
 // Used Paths
 const tempPath        = path.join(__dirname, '../../temp');
 const timerDataPath   = path.join(tempPath, 'timerData.json');
@@ -21,12 +23,15 @@ module.exports = {
 /**
  * Stores the data from timers in JSON format.
  * Warning: it completely re-writes de timer data stored
- * @param {*} timerData 
+ * @param {JSON} timerData 
  */
 function storeTimerData(timerData) {
-  // TODO: esto es muy ineficiente. No jode por ahora pero no va a escalar nada 
-  // bien (lo arreglas cuando agregues una base de datos)
-  const data = JSON.stringify(timerData, null, 2);
+  const formatedData = {
+    timerData: timerData,
+    lastUpdated: new Date()
+  }  
+
+  const data = JSON.stringify(formatedData, null, 2);
   fs.writeFile(timerDataPath, data, (err) => handleError(err));
 }
 

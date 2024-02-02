@@ -7,10 +7,21 @@
 
 let timers = new Array();
 
+// TODO: factorizar mejor (como en main)
+
 // Initial Data Loading
 window.myAPI.receiveComponentData('timerData', (data) => {
-  const timerData = JSON.parse(data);
+  const { timerData, lastUpdated } = JSON.parse(data);
+  const currentDate = new Date();
+  const lastUpdatedDate = new Date(lastUpdated);
+  const updatedToday = currentDate.getDate() === lastUpdatedDate.getDate() &&
+                       currentDate.getMonth() === lastUpdatedDate.getMonth() &&
+                       currentDate.getFullYear() === lastUpdatedDate.getFullYear();
+
   timerData.forEach((item) => {
+    if (!updatedToday) { // Reset timers daily
+      item.remainingTime = item.startingTime;
+    }
     const timer = new TimerComponent(  
       item.title,
       item.startingTime,

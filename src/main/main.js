@@ -10,13 +10,15 @@ let window = null;
 function createWindow() {
   window = new BrowserWindow({
     webPreferences: {
+      width: 1200,
+      height: 800,
       preload: path.join(__dirname, '../preload.js'),
       contextIsolation: true // Protect against prototype pollution
     }
   });
 
   window.loadFile('src/renderer/pages/index.html');
-  window.maximize();
+  //window.maximize();
 }
 
 app.whenReady().then(() => {

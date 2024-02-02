@@ -15,7 +15,7 @@ class TimerComponent {
     this.pauseButton    = document.createElement('button');
     this.resetButton    = document.createElement('button');
 
-    this.#initializeComponents(title);
+    this.#initializeComponents(title, remainingTime);
     this.#setEventListeners();
     this.#buildComponent(leftOffset, topOffset);
     this.#updateTimerText(remainingTime);
@@ -25,7 +25,7 @@ class TimerComponent {
   /**
    * Initialize the atributes of the components
    */
-  #initializeComponents(title) {
+  #initializeComponents(title, remainingTime) {
     // Add classnames
     this.timerContainer.className = 'timer-container';
     this.timerElement.className  = 'timer';
@@ -37,8 +37,10 @@ class TimerComponent {
     this.titleElement.contentEditable = true;
 
     this.timerElement.textContent = '--:--:--';
-
     this.pauseButton.textContent = 'Unpause';
+    if (remainingTime === 0) {
+      this.pauseButton.disabled = true;
+    }
     this.resetButton.textContent = 'Restart';
   }
 
@@ -110,7 +112,6 @@ class TimerComponent {
     if (this.timer.paused) {
       this.#updateTimerText(this.timer.startingTime);
       this.#updateProgressBar(this.timer.startingTime);
-      this.progressBar.style.backgroundColor = '#0C2D57';
     } else {
       this.#start();
     }
@@ -133,7 +134,10 @@ class TimerComponent {
     this.progressBar.style.width = `${percentage * 100}%`;
 
     let r, g, b;
-    if (percentage < 0.7) { // Transition from navy to peach in the first half
+    if (percentage === 1) {
+      this.progressBar.style.backgroundColor = '#0C2D57';
+      return;
+    } else if (percentage < 0.7) { // Transition from navy to peach in the first half
       const p = percentage * 2;
       r = Math.round(12 * (1 - p) + 255 * p);
       g = Math.round(45 * (1 - p) + 176 * p);
