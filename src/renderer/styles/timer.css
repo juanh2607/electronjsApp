@@ -1,0 +1,43 @@
+/* Timer */
+.timer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #EFECEC;
+  box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.5);
+}
+.timer-container h3 {
+  padding: 10px;
+  margin: 0;
+}
+.timer {
+  font-size: 48px;
+  text-align: center;
+  padding: 0px 20px;
+  margin-bottom: 0px;
+  color: #0C2D57;
+}
+.timer-progress {
+  width: 100%;
+  background: #0C2D57; 
+  height: 20px;
+  transition: background 1s;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+/* New Timer Form */
+#newTimerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#newDurationInput {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #e0e0e0;
+}

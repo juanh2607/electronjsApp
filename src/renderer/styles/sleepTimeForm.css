@@ -1,0 +1,36 @@
+/* Sleep Time Form */
+.sleepTimeFormContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #EFECEC;
+  box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.5);
+}
+.sleepTimeFormContainer label {
+  padding: 10px;
+  margin: 0;
+}
+.sleepTimeForm {
+  font-size: 16px;
+  text-align: center;
+  padding: 0px 20px;
+  margin-bottom: 0px;
+  color: #0C2D57;
+}
+.sleepTimeForm input[type="time"] {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #e0e0e0;
+  margin-bottom: 10px;
+}
+.sleepTimeForm button[type="submit"] {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #0C2D57;
+  color: #FFFFFF;
+}

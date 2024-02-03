@@ -7,7 +7,10 @@
 
 let timers = new Array();
 
-// TODO: factorizar mejor (como en main)
+// TODO: factorizar mejor (como en main). Agregar un .js para los handlers
+// Deja este archivo para recibir los datos, instanciar los objetos y para
+// guardar todo cuando cerras la ventana.
+// TODO: mostrar gráfico con el tiempo guardado de los timers.
 
 // Initial Data Loading
 window.myAPI.receiveComponentData('timerData', (data) => {
@@ -59,3 +62,5 @@ window.addEventListener('beforeunload', (event) => {
   const timerData = timers.map(TimerComponent.toJSON);
   window.myAPI.sendComponentData('timerData', timerData);
 });
+
+new sleepTimeComponent();

@@ -1,0 +1,49 @@
+/* Dialog */
+dialog {
+  border: none;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #EFECEC;
+  color: #0C2D57;
+  box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.5);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+dialog form p {
+  margin: 0;
+  padding: 10px;
+}
+
+dialog form input[type="number"] {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #e0e0e0;
+}
+
+dialog form button[type="submit"] {
+  display: inline-block;
+  color: #fff;
+  background-color: #0C2D57; 
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+dialog form button[type="submit"]:hover {
+  background-color: #FC6736; 
+}
+
+dialog #closeButton:hover {
+  background-color: #0C2D57;
+}

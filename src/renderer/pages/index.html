@@ -11,14 +11,18 @@
       content="default-src 'self'; script-src 'self'"
     />
     <link rel="stylesheet" type="text/css" href="../styles/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../styles/timer.css" />
+    <link rel="stylesheet" type="text/css" href="../styles/modal.css" />
+    <link rel="stylesheet" type="text/css" href="../styles/sleepTimeForm.css" />
     <title>Hello from Electron renderer!</title>
   </head>
   <body>
     <p>
-      Acá van los TODO que realmente no quiero olvidar
-      TODO:
-        * Crear método estático dentro de la clase Timer que guarde los ids de los timers
-          (el id es el nombre), y no deje crear timers con el mismo title.
+      Acá van los TODO que realmente no quiero olvidar <br>
+      TODO:<br>
+        * Crear método estático dentro de la clase Timer que guarde los ids de los timers<br>
+          (el id es el nombre), y no deje crear timers con el mismo title.<br>
+        * Ver de usar un bundler<br>
     </p>
     <dialog id="myDialog">
       <form id="newTimerForm">
@@ -39,5 +43,6 @@
   <script src="../draggable.js"></script>
   <script src="../timer.js"></script>
   <script src="../timerComponent.js"></script>
+  <script src="../sleepTimeComponent.js"></script>
   <script src="../renderer.js"></script>
 </html>
