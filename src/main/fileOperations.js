@@ -3,6 +3,12 @@ const fs = require('fs');
 const path = require('node:path');
 
 // TODO: (largo plazo): sustituir por una base de datos
+// TODO: cuando puedas visualizar los datos en la aplicación, ver de guardar
+// las cosas en binario y comunicarlas entre renderer y main en binario.
+// Creo que igual con el json.stringify ya lo estás mandando en binario?
+
+// TODO: ver de convertir el .json en un component.json genérico
+// TODO: crear un csv para los datos de sleeping time
 
 // Used Paths
 const tempPath         = path.join(__dirname, '../../temp');

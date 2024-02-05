@@ -18,6 +18,7 @@ class TimerComponent {
     this.#initializeComponents(title, remainingTime);
     this.#setEventListeners();
     this.#buildComponent(leftOffset, topOffset);
+  
     this.#updateTimerText(remainingTime);
     this.#updateProgressBar(remainingTime);
   }
@@ -170,16 +171,16 @@ class TimerComponent {
   /**
    * Retorna un objeto JSON con los datos necesarios para persistir el timer luego de 
    * cerrada la aplicación
-   * @param {Timer} timer 
+   * @param {TimerComponent} timerComponent 
    * @returns {TimerJSON}
    */
-  static toJSON(timer) {
-    const { left, top } = timer.draggableContainer.getCoordinates();
-    
+  static toJSON(timerComponent) {
+    const { left, top } = timerComponent.draggableContainer.getCoordinates();
+    const timer = timerComponent.timer;
     return {
-      title: timer.titleElement.textContent,
-      startingTime: timer.timer.startingTime,
-      remainingTime: timer.timer.remainingTime,
+      title: timerComponent.titleElement.textContent,
+      startingTime: timer.startingTime,
+      remainingTime: timer.getRemainingTime(),
       leftOffset: left,
       topOffset: top
     }

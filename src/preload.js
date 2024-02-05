@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
+// TODO: fijate de como armar un buen protocolo escalable
 contextBridge.exposeInMainWorld(
   'myAPI', {
     sendPhrase: (channel, data) => {

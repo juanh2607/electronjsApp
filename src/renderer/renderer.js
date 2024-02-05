@@ -15,8 +15,6 @@ let timers = new Array();
 // Initial Data Loading
 window.myAPI.receiveComponentData('timerData', (data) => {
   const timerData = JSON.parse(data);
-  // TODO: el front no debería tener que preocuparse por el reseteo de los timers
-  // esto es lógica del backend
 
   timerData.forEach((item) => {
     const timer = new TimerComponent(  

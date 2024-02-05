@@ -7,6 +7,8 @@ const { showNotification } = require('./notification.js');
 
 let window = null;
 
+// TODO: ver como hacer para que esté todo en strict mode
+
 function createWindow() {
   window = new BrowserWindow({
     webPreferences: {

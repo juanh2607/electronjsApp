@@ -22,7 +22,7 @@ class sleepTimeComponent {
         <input type="time" class="wakeUpTime" name="wakeUpTime">
         <label for="sleepTime">Hora en que me dormí:</label>
         <input type="time" class="sleepTime" name="sleepTime">
-        <button type="submit">Guardar</button>
+        <button id="sleepTimeSubmit" type="submit">Guardar</button>
       </form>
     `
     const container = document.createElement('div');
@@ -32,5 +32,18 @@ class sleepTimeComponent {
     this.draggableContainer = new DraggableContainer(container);
 
     document.body.appendChild(this.draggableContainer.container);
+
+    this.#setEventListeners();
   }
+
+  #buildComponent() {}
+  
+  #setEventListeners() {
+    // TODO: revisar porque no funciona esto
+    /*document.getElementById('sleepTimeSubmit').addEventListener('submit', (event) => {
+      event.preventDefault(); // Prevent page refresh;
+      console.log('hola');
+    });*/
+  }
+  
 }
