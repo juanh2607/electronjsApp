@@ -8,7 +8,6 @@
 class sleepTimeComponent {
   // TODO:
   /*
-   * Agregar eventHandlers
    * Quiero que me deje modificarlo solo durante el día correspondiente
    * Quiero que cuando cargue la aplicación, me abra un pop up pidiendome los
    * datos del día anterior que falten
@@ -16,8 +15,8 @@ class sleepTimeComponent {
    */
 
   constructor() {
-    const html = /*html*/ `
-      <form class="sleepTimeForm">
+    const html = /* html */ `
+      <form id="sleepTimeForm" class="sleepTimeForm">
         <label for="wakeUpTime">Hora en que me desperté:</label>
         <input type="time" class="wakeUpTime" name="wakeUpTime">
         <label for="sleepTime">Hora en que me dormí:</label>
@@ -25,25 +24,44 @@ class sleepTimeComponent {
         <button id="sleepTimeSubmit" type="submit">Guardar</button>
       </form>
     `
-    const container = document.createElement('div');
-    container.className = 'sleepTimeFormContainer';
-    container.innerHTML = html;
+    this.container = document.createElement('div');
+    this.container.id = 'sleepTimeFormContainer';
+    this.container.className = 'sleepTimeFormContainer';
+    this.container.innerHTML = html;
 
-    this.draggableContainer = new DraggableContainer(container);
+    this.draggableContainer = new DraggableContainer(this.container);
 
     document.body.appendChild(this.draggableContainer.container);
 
     this.#setEventListeners();
   }
-
-  #buildComponent() {}
   
   #setEventListeners() {
-    // TODO: revisar porque no funciona esto
-    /*document.getElementById('sleepTimeSubmit').addEventListener('submit', (event) => {
+    document.getElementById('sleepTimeForm').addEventListener('submit', (event) => {
       event.preventDefault(); // Prevent page refresh;
-      console.log('hola');
-    });*/
+      const wakeUpTime = event.target.elements['wakeUpTime'].value;
+      const sleepTime  = event.target.elements['sleepTime'].value;
+    
+      if (!wakeUpTime || !sleepTime) {
+        const errorMsg = document.createElement('p');
+        errorMsg.style.color = 'red';
+        errorMsg.textContent = 'Completa todos los datos pibe';
+        this.container.appendChild(errorMsg);
+        return;
+      }
+
+      console.log(`Hora de despertar: ${wakeUpTime}, Hora de dormir: ${sleepTime}`);
+      
+      this.container.innerHTML = ``;
+      this.#standByAnimation();
+    });
   }
-  
+
+  #standByAnimation(frame = 0) {
+    this.container.textContent = `Hasta un nuevo día${'.'.repeat(frame)}`;
+
+    setTimeout(() => {
+      this.#standByAnimation((frame + 1) % 4);
+    }, 1000);
+  }
 }

@@ -21,6 +21,7 @@ window.myAPI.receiveComponentData('timerData', (data) => {
       item.title,
       item.startingTime,
       item.remainingTime,
+      item.paused,
       item.leftOffset,
       item.topOffset
     );

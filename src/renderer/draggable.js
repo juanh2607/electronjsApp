@@ -7,7 +7,7 @@ class DraggableContainer {
     // Drag Button
     this.dragButton = document.createElement('button');
     this.dragButton.className = 'dragButton';
-    this.dragButton.textContent = 'Drag';
+    this.dragButton.textContent = '.'; // TODO: usar SVG
     this.dragButton.style.display = 'none';
     // Build container
     this.container.appendChild(this.dragButton);

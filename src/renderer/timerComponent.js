@@ -2,7 +2,7 @@
  * Object responsible for the creation and maintainance of the timer UI
  */
 class TimerComponent {
-  constructor(title, startingTime, remainingTime, leftOffset, topOffset) {
+  constructor(title, startingTime, remainingTime, paused, leftOffset, topOffset) {
     this.timer = new tempTimer(startingTime, remainingTime);
     this.timeoutId = null;
     // TODO: si está dentro o no de un draggable container debería ser customizable
@@ -21,6 +21,10 @@ class TimerComponent {
   
     this.#updateTimerText(remainingTime);
     this.#updateProgressBar(remainingTime);
+
+    if (!paused) {
+      this.#start();
+    }
   }
 
   /**
@@ -153,7 +157,7 @@ class TimerComponent {
   }
 
   #handleTimerEnd() {
-    clearTimeout(this.timeoutId); // Isn't necessary I don't think
+    clearTimeout(this.timeoutId); // Isn't necessary I don't think bro
     this.timer.pause();
     this.pauseButton.disabled = true;
     this.pauseButton.textContent = 'Unpause';
@@ -181,6 +185,7 @@ class TimerComponent {
       title: timerComponent.titleElement.textContent,
       startingTime: timer.startingTime,
       remainingTime: timer.getRemainingTime(),
+      paused: timer.paused,
       leftOffset: left,
       topOffset: top
     }
