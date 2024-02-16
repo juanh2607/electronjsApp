@@ -2,13 +2,20 @@
 const fs = require('fs');
 const path = require('node:path');
 
-// TODO: (largo plazo): sustituir por una base de datos
+// TODO: (largo plazo): sustituir por una base de datos. Ver si se justifica usar MongoDB o es overkill.
 // TODO: cuando puedas visualizar los datos en la aplicación, ver de guardar
 // las cosas en binario y comunicarlas entre renderer y main en binario.
 // Creo que igual con el json.stringify ya lo estás mandando en binario?
 
 // TODO: ver de convertir el .json en un component.json genérico
 // TODO: crear un csv para los datos de sleeping time
+
+// TODO: buscar como guardar en BSON (binario y más estricto con los tipos de datos)
+
+// BUG: no funciona correctamente en el siguiente escenario: al terminar el día
+// no apagaste la computadora del todo y al día siguiente retomás de donde dejaste.
+// Cuando cierres la aplicación va a poner el update date como ese día por lo que
+// ni se va a guardar ni reiniciar el temporizador (como si el día tuviese +24 horas)
 
 // Used Paths
 const tempPath         = path.join(__dirname, '../../temp');
@@ -17,12 +24,9 @@ const timerHistoryPath = path.join(tempPath, 'timerHist.csv')
 const phrasesFilePath  = path.join(tempPath, 'phrases.txt');
 
 module.exports = {
-  //Timer 
-  storeTimerData, loadTimerData,
-  // Phrase
-  storePhrase, loadPhrases,
-  // Files 
-  setTempFiles 
+  storeTimerData, loadTimerData, //Timer 
+  storePhrase, loadPhrases,      // Phrase
+  setTempFiles                   // Files 
 };
 
 // TODO: ver si conviene hacerlo asyncrónico
@@ -35,10 +39,19 @@ module.exports = {
 function storeTimerData(timerData) {
   const formatedData = {
     timerData: timerData,
-    lastUpdated: new Date()
-  }  
+    lastReset: new Date()
+  }
+
+  // Check if history should be saved
+  const fileData = fs.readFileSync(timerDataPath, (err) => handleError(err));
+  const fileDataJSON = JSON.parse(fileData.toString());
+
+  if(!updatedToday(fileDataJSON.lastReset)) {
+    writeTimerHistory(fileDataJSON.timerData, fileDataJSON.lastReset);
+  }
 
   const data = JSON.stringify(formatedData, null, 2);
+  
   fs.writeFile(timerDataPath, data, (err) => handleError(err));
 }
 
@@ -51,14 +64,15 @@ function loadTimerData() {
   const data = fs.readFileSync(timerDataPath, (err) => handleError(err));
   const dataJSON = JSON.parse(data.toString());
 
-  if (!updatedToday(dataJSON.lastUpdated)) {
-    writeTimerHistory(dataJSON.timerData, dataJSON.lastUpdated);
+  if (!updatedToday(dataJSON.lastReset)) {
+    writeTimerHistory(dataJSON.timerData, dataJSON.lastReset);
     // Reset timers
     dataJSON.timerData.forEach((item) => {
       item.remainingTime = item.startingTime;
     });
+    dataJSON.lastReset = new Date();
   }
-
+  // TODO: no estas revisando que exista la data, te va a dar error si es la primera vez
   return JSON.stringify(dataJSON.timerData, null, 2);
 }
 
@@ -83,6 +97,9 @@ function updatedToday(lastUpdated) {
  * @param {string} date 
  */
 function writeTimerHistory(timerData, date) {
+  // TODO: si pasa más de un día en que se uso la aplicación, repite el último día guardado
+  // ver timerHist para entenderlo bien.
+  // TODO: no guardar historial de campos con remaining time = 0, son irrelevantes
   const historyData = timerData.map(({ title, startingTime, remainingTime }) => ({
     date: new Date(date).toISOString().split('T')[0], // YYYY-MM-DD format
     title: title,

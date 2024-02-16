@@ -28,6 +28,16 @@ class TimerComponent {
   }
 
   /**
+   * Sets time left to 0 and leaves de timer paused
+   */
+  resetTimer() {
+    this.timer.pause();
+    this.timer.reset();
+    this.#updateTimerText(this.timer.startingTime);
+    this.#updateProgressBar(this.timer.startingTime);
+  }
+
+  /**
    * Initialize the atributes of the components
    */
   #initializeComponents(title, remainingTime) {

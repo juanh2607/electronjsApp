@@ -1,11 +1,36 @@
+// Global Variables
+let now = new Date(); // Used to know when to reload data.
+let nextDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+let msUntilNextRefresh = nextDay.getTime() - now.getTime();
+// Objects
+let timers = new Array();
+new sleepTimeComponent();
+
+setTimeout(refreshApp, 20000);
+
+/**
+ * Sends the necessary data to main and reloads time-based resources like 
+ * timers, sleep time update, etc
+ * Sets a new timeout for the next refresh
+ */
+function refreshApp() {
+  window.myAPI.sendComponentData('timerData', timers.map(TimerComponent.toJSON));
+  timers.forEach((t) => t.resetTimer());
+
+  now = new Date();
+  nextDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  // Still necessary because of computer sleep mode. refreshApp may be called any hour
+  msUntilNextRefresh = nextDay.getTime() - now.getTime();
+  setTimeout(refreshApp, msUntilNextRefresh); 
+  // TODO: volver a activar el coso de cargar horario sueño
+}
+
 /*document.getElementById('phraseForm').addEventListener('submit', (event) => {
   event.preventDefault(); // To prevent the form from refreshing the page
   const phraseInput = document.getElementById('phraseInput');
   window.myAPI.sendPhrase('phraseInput', phraseInput.value);
   phraseInput.value = '';
 });*/
-
-let timers = new Array();
 
 // TODO: factorizar mejor (como en main). Agregar un .js para los handlers
 // Deja este archivo para recibir los datos, instanciar los objetos y para
@@ -56,10 +81,9 @@ newTimerForm.addEventListener('submit', (event) => {
 });
 
 // Before Unload
-window.addEventListener('beforeunload', (event) => {
-  // TODO: el remainingTime no se está guardando bien si el temporizador no se pausa antes de llamar a toJSON
+// TODO: el remainingTime no se está guardando bien si el temporizador no se pausa antes de llamar a toJSON
+window.addEventListener('beforeunload', () => {
   const timerData = timers.map(TimerComponent.toJSON);
   window.myAPI.sendComponentData('timerData', timerData);
 });
 
-new sleepTimeComponent();
