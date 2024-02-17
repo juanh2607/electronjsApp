@@ -6,7 +6,7 @@ let msUntilNextRefresh = nextDay.getTime() - now.getTime();
 let timers = new Array();
 new sleepTimeComponent();
 
-setTimeout(refreshApp, 20000);
+setTimeout(refreshApp, msUntilNextRefresh);
 
 /**
  * Sends the necessary data to main and reloads time-based resources like 
@@ -21,8 +21,8 @@ function refreshApp() {
   nextDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
   // Still necessary because of computer sleep mode. refreshApp may be called any hour
   msUntilNextRefresh = nextDay.getTime() - now.getTime();
-  setTimeout(refreshApp, msUntilNextRefresh); 
-  // TODO: volver a activar el coso de cargar horario sueño
+  setTimeout(refreshApp, msUntilNextRefresh);
+  // TODO: volver a activar el coso de cargar horario sueño. No hace falta mandarle nada al back
 }
 
 /*document.getElementById('phraseForm').addEventListener('submit', (event) => {
@@ -54,6 +54,10 @@ window.myAPI.receiveComponentData('timerData', (data) => {
   });
 });
 
+window.myAPI.receiveComponentData('componentsData', (data) => {
+  console.log(data);
+});
+
 // Modal
 const myDialog = document.getElementById('myDialog');
 const openButton = document.getElementById('add');
@@ -80,10 +84,10 @@ newTimerForm.addEventListener('submit', (event) => {
   }
 });
 
-// Before Unload
-// TODO: el remainingTime no se está guardando bien si el temporizador no se pausa antes de llamar a toJSON
 window.addEventListener('beforeunload', () => {
   const timerData = timers.map(TimerComponent.toJSON);
   window.myAPI.sendComponentData('timerData', timerData);
-});
 
+  const data = timerData;
+  window.myAPI.sendComponentData('componentsData', data);
+});

@@ -11,13 +11,13 @@ contextBridge.exposeInMainWorld(
       }
     },
     sendComponentData: (channel, data) => {
-      const validChannels = ['timerData'];
+      const validChannels = ['timerData', 'componentsData'];
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data);
       }
     },
     receiveComponentData: (channel, func) => {
-      const validChannels = ['timerData'];
+      const validChannels = ['timerData', 'componentsData'];
       if (validChannels.includes(channel)) {
         ipcRenderer.on(channel, (event, ...args) => func(...args));
       }

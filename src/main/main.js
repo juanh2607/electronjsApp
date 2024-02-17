@@ -2,7 +2,7 @@ const { app, BrowserWindow } = require('electron/main');
 const path = require('node:path'); // Utilities for working with file and directory paths
 const enableAutoLaunch = require('./autolaunch.js');
 const { setIpcHandlers } = require('./ipcHandlers.js');
-const { setTempFiles, loadTimerData } = require('./fileOperations.js');
+const { setTempFiles, loadTimerData, loadComponentsData } = require('./fileOperations.js');
 const { showNotification } = require('./notification.js');
 
 let window = null;
@@ -37,8 +37,11 @@ app.whenReady().then(() => {
   });
 
   window.webContents.on('did-finish-load', () => {
-    const data = loadTimerData(); // TODO: Separar lógica en un initializer.js cuando esto crezca
-    window.webContents.send('timerData', data);
+    const timerData = loadTimerData(); // TODO: Separar lógica en un initializer.js cuando esto crezca
+    window.webContents.send('timerData', timerData);
+
+    const data = loadComponentsData();
+    window.webContents.send('componentsData', data);
   });
 });
 

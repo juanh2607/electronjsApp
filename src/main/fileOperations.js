@@ -12,21 +12,18 @@ const path = require('node:path');
 
 // TODO: buscar como guardar en BSON (binario y más estricto con los tipos de datos)
 
-// BUG: no funciona correctamente en el siguiente escenario: al terminar el día
-// no apagaste la computadora del todo y al día siguiente retomás de donde dejaste.
-// Cuando cierres la aplicación va a poner el update date como ese día por lo que
-// ni se va a guardar ni reiniciar el temporizador (como si el día tuviese +24 horas)
-
 // Used Paths
 const tempPath         = path.join(__dirname, '../../temp');
-const timerDataPath    = path.join(tempPath, 'timerData.json');
+const timerDataPath    = path.join(tempPath, 'timerData.json'); // TODO: eliminar una vez esté el genérico
+const componentsDataPath = path.join(tempPath, 'componentsData.json');
 const timerHistoryPath = path.join(tempPath, 'timerHist.csv')
 const phrasesFilePath  = path.join(tempPath, 'phrases.txt');
 
 module.exports = {
   storeTimerData, loadTimerData, //Timer 
   storePhrase, loadPhrases,      // Phrase
-  setTempFiles                   // Files 
+  setTempFiles,                  // Files 
+  storeComponentsData, loadComponentsData // Components
 };
 
 // TODO: ver si conviene hacerlo asyncrónico
@@ -140,9 +137,11 @@ function setTempFiles() {
   if (!fs.existsSync(tempPath)) {
     fs.mkdirSync(tempPath);  
   }
+  
   createFileIfNotExists(phrasesFilePath);
   createFileIfNotExists(timerDataPath);
   createFileIfNotExists(timerHistoryPath);
+  createFileIfNotExists(componentsDataPath);
 }
 
 /**
@@ -158,3 +157,59 @@ function createFileIfNotExists(pathname) {
     });
   }
 }
+
+/**
+ * Reads the components data and returns a JSON string.
+ * @returns {string}
+ */
+function loadComponentsData() {
+  const dataBuffer = fs.readFileSync(componentsDataPath, (err) => handleError(err));
+  if (dataBuffer.length === 0) return null;
+  
+  const data = JSON.parse(dataBuffer.toString());
+  
+  // TODO: el checkeo de errores es minimo
+  if(!updatedToday(data.timerData.lastReset)) {
+    writeTimerHistory(data.timerData.timers, data.timerData.lastReset);
+    // Reset timers
+    data.timerData.timers.forEach((t) => {
+      t.remainingTime = t.startingTime;
+    });
+    data.timerData.lastReset = new Date(); // TODO: esto va a la nada misma
+  }
+
+  return JSON.stringify(data.timerData.timers, null, 2);
+}
+
+/**
+ * Stores the data from components in JSON format.
+ * Warning: it completely re-writes de component data stored
+ * @param {JSON} data 
+ */
+function storeComponentsData(data) {
+  const formatedData = {
+    timerData: {
+      timers: data,
+      lastReset: new Date()
+    }
+  }
+  // Check if timer history should be saved. TODO: esto se puede hacer de mejor forma
+  /*if(!componentsRefreshedToday()) {
+    writeTimerHistory();
+  }*/
+  const dataBuffer = fs.readFileSync(componentsDataPath, (err) => handleError(err));
+  if (dataBuffer.length !== 0) {
+    const fileDataJSON = JSON.parse(dataBuffer.toString());
+
+    if(!updatedToday(fileDataJSON.timerData.lastReset)) {
+      writeTimerHistory(fileDataJSON.timerData.timers, fileDataJSON.timerData.lastReset);
+    }
+  }
+  
+  const json = JSON.stringify(formatedData, null, 2);
+  fs.writeFile(componentsDataPath, json, (err) => handleError(err));
+}
+
+// TODO: creo que no es necesario hacer (err) => handleError(err). Con hacer handleError deberia estar
+// TODO: en lugar de lastReset, hacer un lastRefresh generico para todos los componentes
+// TODO: tenes que hacer tests para esto. Se esta volviendo pesado probar a mano
