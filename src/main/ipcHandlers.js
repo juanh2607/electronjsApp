@@ -4,6 +4,8 @@ const { storeTimerData, storePhrase, storeComponentsData } = require('./fileOper
 // TODO: separa las responsabilidades (lo vinculado al filesystem separalo de cosas
 // como resetear tiempos)
 
+// TODO: eliminar el uso de timerData
+
 function setIpcHandlers() {
   ipcMain.on('componentsData', (event, data) => storeComponentsData(data));
   ipcMain.on('timerData', (event, timerData) => storeTimerData(timerData));

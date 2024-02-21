@@ -40,7 +40,7 @@ function storeTimerData(timerData) {
   }
 
   // Check if history should be saved
-  const fileData = fs.readFileSync(timerDataPath, (err) => handleError(err));
+  const fileData = fs.readFileSync(timerDataPath, handleError);
   const fileDataJSON = JSON.parse(fileData.toString());
 
   if(!updatedToday(fileDataJSON.lastReset)) {
@@ -49,7 +49,7 @@ function storeTimerData(timerData) {
 
   const data = JSON.stringify(formatedData, null, 2);
   
-  fs.writeFile(timerDataPath, data, (err) => handleError(err));
+  fs.writeFile(timerDataPath, data, handleError);
 }
 
 /**
@@ -58,7 +58,7 @@ function storeTimerData(timerData) {
  * @returns {string} - String containing the json data.
  */
 function loadTimerData() {
-  const data = fs.readFileSync(timerDataPath, (err) => handleError(err));
+  const data = fs.readFileSync(timerDataPath, handleError);
   const dataJSON = JSON.parse(data.toString());
 
   if (!updatedToday(dataJSON.lastReset)) {
@@ -105,7 +105,7 @@ function writeTimerHistory(timerData, date) {
 
   const csvData = historyData.map(({ date, title, timeElapsed }) => `${date};${title};${timeElapsed}`).join('\n');
 
-  fs.appendFile(timerHistoryPath, csvData + '\n', (err) => handleError(err));
+  fs.appendFile(timerHistoryPath, csvData + '\n', handleError);
 }
 
 /**
@@ -113,7 +113,7 @@ function writeTimerHistory(timerData, date) {
  * @param {string} phrase 
  */
 function storePhrase(phrase) {
-  fs.appendFile(phrasesFilePath, phrase + '\n', (err) => handleError(err));
+  fs.appendFile(phrasesFilePath, phrase + '\n', handleError);
 }
 
 /**
@@ -121,7 +121,7 @@ function storePhrase(phrase) {
  * @returns {string}
  */
 function loadPhrases() {
-  const data = fs.readFileSync(phrasesFilePath, 'utf8', (err) => handleError(err));
+  const data = fs.readFileSync(phrasesFilePath, 'utf8', handleError);
   return data;
 }
 
@@ -153,7 +153,7 @@ function createFileIfNotExists(pathname) {
     fs.open(pathname, 'a', (err, fd) => {
       handleError(err);
 
-      fs.close(fd, (err) => handleError(err));
+      fs.close(fd, handleError);
     });
   }
 }
@@ -163,11 +163,11 @@ function createFileIfNotExists(pathname) {
  * @returns {string}
  */
 function loadComponentsData() {
-  const dataBuffer = fs.readFileSync(componentsDataPath, (err) => handleError(err));
+  const dataBuffer = fs.readFileSync(componentsDataPath, handleError);
   if (dataBuffer.length === 0) return null;
   
   const data = JSON.parse(dataBuffer.toString());
-  
+
   // TODO: el checkeo de errores es minimo
   if(!updatedToday(data.timerData.lastReset)) {
     writeTimerHistory(data.timerData.timers, data.timerData.lastReset);
@@ -197,19 +197,19 @@ function storeComponentsData(data) {
   /*if(!componentsRefreshedToday()) {
     writeTimerHistory();
   }*/
-  const dataBuffer = fs.readFileSync(componentsDataPath, (err) => handleError(err));
+  const dataBuffer = fs.readFileSync(componentsDataPath, handleError);
   if (dataBuffer.length !== 0) {
     const fileDataJSON = JSON.parse(dataBuffer.toString());
 
     if(!updatedToday(fileDataJSON.timerData.lastReset)) {
       writeTimerHistory(fileDataJSON.timerData.timers, fileDataJSON.timerData.lastReset);
+      // TODO: falta el reset timers acá
     }
   }
   
   const json = JSON.stringify(formatedData, null, 2);
-  fs.writeFile(componentsDataPath, json, (err) => handleError(err));
+  fs.writeFile(componentsDataPath, json, handleError);
 }
 
-// TODO: creo que no es necesario hacer (err) => handleError(err). Con hacer handleError deberia estar
 // TODO: en lugar de lastReset, hacer un lastRefresh generico para todos los componentes
 // TODO: tenes que hacer tests para esto. Se esta volviendo pesado probar a mano
